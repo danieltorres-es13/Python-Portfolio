@@ -1,0 +1,262 @@
+data_analysis = []
+
+# Body of my report; it is just the introduction at this point. 
+print('-' * 40)
+
+# My personal Data and front cover!
+print(f"""Daniel Esteban Torres Espinoza MBA
+\033[1mData Analysis Project\033[0m
+Introduction to Python Programming
+\033[1mProf. Chase Kusterer\033[0m""")
+print('-' * 40)
+
+# This is my introduction to the Project and to the Data
+print(f"""
+\033[1mINTRODUCTION\033[0m
+""")
+
+print(f"""
+\f                       
+You wil find in my analysis how I addressed the questions proposed by our stakeholders, my insights 
+I found in the data and even better, you will find valuable information that will help you make 
+business decisions and continue the company's continuous growth.
+
+It should be noted that all this knowledge and techniques I learned during my Introduction to Python 
+Programming class with Professor Chase Kusterer during my summer courses in my M.B.A. program at Hult 
+International Business School.
+""")
+
+# Analyzing and reviewing the data in the file "Bike"
+# Continuing with my report #
+print('*' * 40)
+
+print(f"""
+\033[1m-DATA ANALYSIS-\033[0m
+""")
+print(f"""
+\f 
+It is important to see the relationship between the variables “Rented Bike” has with “Temperature” “Humidity” 
+“Seasons” and “Holiday”.
+
+I converted the values of "DATE" to day of the week and then assigned a number to each day of the week. 
+
+I did the same with the “Holiday” column, assigning binary values to it. This is to keep the file in the same
+language and find correlations between each variable.
+
+It is relevant to highlight the previous points since it is essential for the correct analysis of the information
+that I will develop below.
+
+""")
+
+# Here I´m going to modify the data as mentioned in previous paragraph. 
+
+import pandas as pd
+
+# Read the bike.xlsx file 
+df = pd.read_excel('bike.xlsx')
+file = "/Users/DANIELTORRES/Library/CloudStorage/OneDrive-CapitalManagementConsulting/07. MBA/23. Python/03. Day 3/bike.xlsx"
+bike = pd.read_excel(io = file)
+
+# Replacing the values following specified (Date, Functioning Day, Holiday, Seasons)
+# and adding dayofweek column into the file named bike. 
+df = pd.read_excel("/Users/DANIELTORRES/Library/CloudStorage/OneDrive-CapitalManagementConsulting/07. MBA/23. Python/02. Assingments/03. Data Analysis/bike.xlsx")
+df['Date'] = pd.to_datetime(df['Date'])
+# Now that we changed the dates into day of week, I add a new column in bike file named DayOfWeek
+df['DayOfWeek'] = df['Date'].dt.day_name()
+# Final Step, I replaced all the columns that had letters into numbers!
+Days = {'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6, 'Sunday': 7}
+df['DayOfWeek'] = df['DayOfWeek'].replace(Days)
+df['Functioning Day'] = df['Functioning Day'].replace({'Yes': 1, 'No': 2})
+df['Holiday'] = df['Holiday'].replace({'Holiday': 1, 'No Holiday': 2})
+df['Seasons'] = df['Seasons'].replace({'Winter': 1, 'Spring': 2, 'Summer': 3, 'Autumn': 4})
+
+print(data_analysis)
+# According to GeeksforGeeks (n.d.), the "def" keyword in Python is used to define a function.
+# Here you will see the information within the file named bike with the new characters. 
+bike
+
+# This is the second section of what I´m going to explain 
+print(f"""
+\033[1m-CORRELATION ANALYSIS-\033[0m
+""")
+# This is the body of my insights related to the second section of correlation analysis!
+print(f"""
+\f
+The correlation graph shows that the increase in temperature directly influences the rental of bicycles. 
+Time directly impacts the rental of bicycles, the greater the increase in the hour, the more bicycles rented,
+however, previously specified the hours with the greatest demand for bicycles!
+It has the time among those of more variables.
+
+Despite not having a high percentage of correlation with the variable of rented bicycles, dew point and seasons
+have a direct impact on the demand for bicycles, this is also confirmed in the analysis of the previous 
+paragraph.
+""")
+# I needed to import the following data in order to show the visualizations of correlation analysis. 
+import matplotlib.pyplot as plt # data visualization essentials
+import seaborn           as sns # enhanced data visualization
+
+# specifying plot size (making it bigger)
+bike.corr(method = 'pearson').round(decimals = 2)
+
+# This is my second visual of the same correlation anaylis explained above. 
+
+# converting correlation matrix into a DataFrame
+bike_corr = bike.corr(method = 'pearson').round(decimals = 2)
+
+# instantiating a heatmap
+sns.heatmap(data = bike_corr)
+
+
+# displaying the plot
+plt.show(block = True)
+
+print(f"""
+\033[1m-CORRELATION ANALYSIS-\033[0m
+""")
+
+# specifying plot size (making it bigger)
+fig, ax = plt.subplots( figsize = (12 , 12) )
+
+
+# developing a freezing cold heatmap
+sns.heatmap(data       = bike_corr    , # the correlation matrix
+            cmap       = 'Blues'      , # changing to COOL colors
+            square     = True         , # tightening the layout
+            annot      = True         , # should there be numbers in the heatmap
+            linecolor  = 'black'      , # lines between boxes
+            linewidths = 0.5          ) # how thick should the lines be?
+
+
+# title and displaying the plot
+plt.title(label = """
+Linear Correlation Heatmap for Bike Features
+""")
+
+
+# rendering the visualization
+plt.show(block = True)
+
+
+# This is the tile of my third insight that I found in the data.
+print(f"""
+\033[1m-BAR CHART ANALYSIS (x= Day of Week y= Rented Bike Count)-\033[0m
+""")
+
+print(f"""
+\f
+
+It is worth noting that Sunday is by far the day of the week that fewer bicycles are rented. These three days
+with the highest demand during the week are the days that we must focus more and dedicate more resources. 
+Monday and Wednesday are the next two days when there is the greatest demand for bicycles, the difference 
+is not much, so I would say that in general, the days with the least demand for bicycle rentals are Sunday 
+and Tuesday.
+
+It would be worth investing time in finding out what the profile of our customers who rent the bikes is, 
+it is curious to see in this graph that Monday represents a day with a lot of demand in bicycles, almost 
+the same demand to the 3 most popular days. 
+
+To the strategy previously recomended, I add the following: While Thursday,
+Friday, and Saturday from 11:50 a.m. to 17:25 p.m. during the summer are the days with the highest demand for 
+bicycles for the company, the company must dedicate Sundays and Tuesdays to focus their resources on 
+keeping the bicycles in good condition to cover the supply of peak days.
+
+""")
+# I needed to import the following data in order to show the visualizations of bar chart! 
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.barplot(x='DayOfWeek', y='Rented Bike Count', data=bike)
+plt.title('Rented Bike Count per Day of Week') # assigning the title of the chart 
+plt.xlabel('Day of Week') # assigning value to the x axis 
+plt.ylabel('Rented Bike Count') # assigning value to the y axis
+plt.show()
+
+
+# I´m adding this insight I considered relevant when decision-making. 
+print(f"""
+\033[1m-OTHER RELEVANT INFORMATION-\033[0m
+""")
+
+print(f"""
+\f
+The main movements that stand out in the graph are the big changes between 3 seasons of 
+the year compared to winter, they are significant changes during the year and, if we compliment this analysis
+with the days of the week, we observe that Saturday and Sunday during the winter, are the days with less 
+demand during the year.
+
+We can translate this revelation as the period of the year when fewer resources should be invested in the
+company, extraordinary expenses are not needed, and no extra labor is needed as well. 
+
+The seasons of the year with the greatest demand are by far Summer and Autumn. The company can use this 
+information to apply available resources when they are most needed.
+
+It should also be noted that Spring should be considered an important time of year when we talk about demand 
+for bicycles but, during spring. In general, apart from Mondays and Thursdays during Spring, 
+the demand remains constant.
+
+""")
+# I needed to import the following data in order to show the visualizations of bar chart with Seasons! 
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+sns.set(style="whitegrid") # This is the style of the chart I selected in Seanborn
+
+ax = sns.barplot(x='DayOfWeek', y='Rented Bike Count', hue='Seasons', data=bike)
+
+plt.title('Rented Bike Count per Day of Week & Seasons', fontsize=14) # adding a name to my chart
+plt.xlabel('Day of Week', fontsize=12) # select day of week for the x axis
+plt.ylabel('Rented Bike Count', fontsize=12) # select rented bike count for the y axis
+
+ax.tick_params(axis='x', labelsize=10) #stablishing the x axis parameters
+ax.tick_params(axis='y', labelsize=10) #stablishing the y axis parameters
+
+plt.tight_layout()
+
+plt.legend(title='Seasons', loc='upper right') # stablishing the labels of the chart
+
+plt.show()
+#According to GeeksforGeeks (n.d.), the "def" keyword in Python is used to define a function.
+
+# My conclusions
+
+print(f"""
+\033[1m-OTHER RELEVANT INFORMATION-\033[0m
+""")
+
+print(f"""
+\f
+
+Following the same idea as the previous point, the company must focus part of its strategy on Fridays 
+and Saturdays throughout the year as functional days, at least during Spring, Summer, and Fall seasons. Make an 
+exchange of functional days with Tuesday and Wednesday, which are the days with the lowest demand during 
+the year.
+
+""")
+
+print(f"""
+\033[1m-CONCLUSIONS-\033[0m
+""")
+
+print(f"""
+\f
+The company should change its non-functional day from Thursday to Tuesday. The days with the highest number 
+of rented bicycles are from Thursday to Saturday!
+
+Thursday to Saturday during summer and autumn are the most important periods, and the company should allocate 
+the majority of its resources during this season due to the high demand for bicycles.
+
+During winter and the beginning of spring, the company should focus on asset maintenance and utilize that time
+for innovation and implementation.
+
+I really enjoyed the activity and I would like to thank Professor Chase Kusterer for assigning me this 
+enriching task. I appreciated being able to apply the knowledge I gained during my summer class, Introduction 
+to Python Programming, as part of my M.B.A. program at Hult International Business School.
+""")
+print(f"""
+\033[1m-REFERENCES-\033[0m
+""")
+
+print(f"""
+\f
+GeeksforGeeks. (n.d.). Python "def" keyword. Retrieved from https://www.geeksforgeeks.org/python-def-keyword/
+""")
